@@ -1,0 +1,13 @@
+{
+  "name": "Facebook News Feed Cleaner",
+  "description": "Automatically remove spam (e.g. Sponsored, Suggested) articles from your Facebook News Feed.",
+  "version": "0.1",
+  "manifest_version": 2,
+  "permissions": ["https://facebook.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.facebook.com/"],
+      "js": ["remove-news-feed-spam.js"]
+    }
+  ]
+}
