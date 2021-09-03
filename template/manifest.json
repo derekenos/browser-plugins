@@ -1,0 +1,26 @@
+{
+  "name": "Browser Extension Template",
+  "description": "A template for building browser extensions.",
+  "version": "0.1",
+  "manifest_version": 3,
+  "host_permissions": ["https://*/*"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["content-script.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "Component.js",
+        "Module.js",
+        "icon.svg"
+      ],
+      "matches": ["https://*/*"]
+    }
+  ]
+}
