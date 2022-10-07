@@ -1,16 +1,46 @@
 
 const SUGGESTED = Symbol("suggested")
 const SPONSORED = Symbol("sponsored")
+const REELS = Symbol("reels")
 const NORMAL = Symbol("normal")
 
 const log_debug = msg => console.debug(`[facebook-news-feed-cleaner]: ${msg}`)
 
 function detectArticleType (articleEl) {
-  const textContent = articleEl.textContent
+  let textContent = articleEl.textContent
+
+  // Observed in the wild, textContent containing:
+  // "... · tSrsondope8fd0ging0pS40e1ctu4r6st1u6oog4ga  · ..."
+  // The word "Sponsored" is scrambled but continguous using a series
+  // of <spans> with the intruder element having display=none,
+  //  pos=abs + top=3em, to make it non-visible.
+  // Accessibility comes to the rescue though, as a aria-labelledby attribute
+  // points to the textContent "Sponsored", so collect all of the label element
+  // text contents as well and simply append to them to textContent for ease of
+  // detection.
+  for (const el of articleEl.querySelectorAll("[aria-label]")) {
+    if (el.getAttribute("aria-label") === "Sponsored") {
+      return SPONSORED
+    }
+  }
+
+  for (const el of articleEl.querySelectorAll("[aria-labelledby]")) {
+    const labelEl = document.getElementById(el.getAttribute("aria-labelledby"))
+    // Some references don't exist?
+    if (labelEl && labelEl.textContent === "Sponsored") {
+      return SPONSORED
+    }
+  }
+
+  // Remove all non-alpha/space chars.
+  textContent = textContent.replace(/[^a-zA-Z\s]/g, "")
+
   if (textContent.includes("Suggested for you")) {
     return SUGGESTED
-  } else if (textContent.replace(/\-/g, "").includes("Sponsored")) {
+  } else if (textContent.includes("Sponsored")) {
     return SPONSORED
+  } else if (textContent.includes("Reels and short videos")) {
+    return REELS
   }
   return NORMAL
 }
