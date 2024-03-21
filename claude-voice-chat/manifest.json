@@ -2,22 +2,17 @@
   "name": "Voice Cat via the Claude.ai Web UI",
   "description": "Have a voice conversation with Claude through its web UI.",
   "version": "0.1",
-  "manifest_version": 2,
-  "browser_action": {
+  "manifest_version": 3,
+  "action": {
     "default_title": "Claude Voice Chat",
     "default_popup": "src/popup.html"
   },
-  "permissions": [
-    "activeTab",
-    "tabs"
-  ],
+  "permissions": ["activeTab", "tabs"],
   "background": {},
   "content_scripts": [
     {
       "matches": ["https://claude.ai/chat/*"],
-      "js": [
-        "src/main.js"
-      ]
+      "js": ["src/main.js"]
     }
   ],
   "web_accessible_resources": []
