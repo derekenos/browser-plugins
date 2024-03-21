@@ -1,0 +1,21 @@
+{
+  "name": "Voice Cat via the Claude.ai Web UI",
+  "description": "Have a voice conversation with Claude through its web UI.",
+  "version": "0.1",
+  "manifest_version": 2,
+  "permissions": ["https://claude.ai/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/chat/*"],
+      "js": [
+        "./node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
+        "src/main.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "src/constants.js",
+    "src/claude-voice-chat.js",
+    "src/claude-voice-chat-config.js"
+  ]
+}
