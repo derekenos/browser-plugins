@@ -3,19 +3,22 @@
   "description": "Have a voice conversation with Claude through its web UI.",
   "version": "0.1",
   "manifest_version": 2,
-  "permissions": ["https://claude.ai/*"],
+  "browser_action": {
+    "default_title": "Claude Voice Chat",
+    "default_popup": "src/popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "background": {},
   "content_scripts": [
     {
       "matches": ["https://claude.ai/chat/*"],
       "js": [
-        "./node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
         "src/main.js"
       ]
     }
   ],
-  "web_accessible_resources": [
-    "src/constants.js",
-    "src/claude-voice-chat.js",
-    "src/claude-voice-chat-config.js"
-  ]
+  "web_accessible_resources": []
 }
