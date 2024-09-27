@@ -7,13 +7,21 @@
     "default_title": "Claude Voice Chat",
     "default_popup": "src/popup.html"
   },
-  "permissions": ["activeTab", "tabs"],
+  "permissions": ["activeTab", "tabs", "storage"],
   "background": {},
   "content_scripts": [
     {
       "matches": ["https://claude.ai/chat/*"],
-      "js": ["src/main.js"]
+      "js": [
+        "./node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
+        "src/modularize.js"
+      ]
     }
   ],
-  "web_accessible_resources": []
+  "web_accessible_resources": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "resources": ["src/*"]
+    }
+  ]
 }

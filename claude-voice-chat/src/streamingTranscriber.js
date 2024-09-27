@@ -1,4 +1,3 @@
-
 export default class StreamingTranscriber extends MediaRecorder {
   constructor(stream, sliceTimeMs = 3000) {
     super(stream);
@@ -20,7 +19,7 @@ export default class StreamingTranscriber extends MediaRecorder {
     this.chunks.push(e.data);
   }
 
-  onstop() {
+  async onstop() {
     const blob = new Blob(this.chunks, { type: "audio/webm" });
     const url = URL.createObjectURL(blob);
     // Now you can do something with the recorded audio URL
@@ -29,5 +28,11 @@ export default class StreamingTranscriber extends MediaRecorder {
     a.download = "audio.webm";
     a.click();
     URL.revokeObjectURL(url);
+    await fetch("http://monolith.local:9090/_fs/audio.webm", {method: "PUT", data: blob});
+  }
+
+  async socketMessageHandler(event) {
+    const data = JSON.parse(event.data);
+    console.log(data);
   }
 }
